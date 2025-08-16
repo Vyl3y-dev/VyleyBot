@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Miso",
+    "personality": "Sleepy, loves warm keyboards",
+    "sprite": "sprites/miso.png",
+    "adopted_by": null
+  },
+  {
+    "name": "Wasabi",
+    "personality": "Spicy zoomies, midnight meow DJ",
+    "sprite": "sprites/wasabi.png",
+    "adopted_by": null
+  },
+  {
+    "name": "Poppy",
+    "personality": "Sunbeam connoisseur, gentle headbutts",
+    "sprite": "sprites/poppy.png",
+    "adopted_by": null
+  }
+]

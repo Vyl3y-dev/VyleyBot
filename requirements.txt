@@ -1,0 +1,7 @@
+twitchio==2.9.1
+python-dotenv
+
+REPO: https://github.com/Vyl3y-dev/VyleyBot
+Author: Vyl3y-dev
+Authors Github: https://github.com/Vyl3y-dev
+Authors Twitch: https://Twitch.tv/TheTerriblePlayer 
