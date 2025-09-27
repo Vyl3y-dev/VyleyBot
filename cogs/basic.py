@@ -30,7 +30,7 @@ async def hug(ctx: commands.Context, *, user: str = None):
     await ctx.send(message)
 
 @commands.command(name="8ball")
-async def eight_ball(ctx: commands.commanads.Context, *, question: str = None):
+async def eight_ball(ctx: commands.Context, *, question: str = None):
     if question is None:
         await ctx.send(f"@{ctx.author.name}, you need to ask a question! Usage: !8ball <question>")
         return
