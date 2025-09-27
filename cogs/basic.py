@@ -20,7 +20,7 @@ async def hug(ctx: commands.Context, *, user: str = None):
     
     target_user = ""
     if user:
-        target_user = user.lstrip('@') # Removes the @ if someone pings the user with it.
+        target_user = user.strip().lstrip('@') # Removes the @ if someone pings the user with it.
 
     if not target_user:
         message = f"@{ctx.author.name} gets a big, warm hug! {random.choice(hug_emotes)}"
