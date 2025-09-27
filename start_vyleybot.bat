@@ -1,4 +1,4 @@
 @echo off
-call venv\Scripts\activate
+call vylebot-env\Scripts\activate
 python VyleyBot.py
 pause
