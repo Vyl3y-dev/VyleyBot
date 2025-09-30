@@ -22,6 +22,8 @@ cats! --> make it so people can redeem points to adopt a cat from a group of cat
 
 !addquote <text> → Saves a memorable moment/quote (mod-only).
 
+!followage -- Self explanatory.
+
 +50 -> add by 1 to a counter every time Vy says +50
 
 -1 -> add by 1 to a counter every time Vy misses a canon
