@@ -54,4 +54,6 @@ if __name__ == "__main__":
     print("📝Quotes module... Enabled!")
     bot.load_module("cogs.welcome")
     print("👋Welcome new chatters... Enabled!")
+    bot.load_module("cogs.stream_utility")
+    print("📊Stream Utility commands... Enabled!")
     bot.run()
