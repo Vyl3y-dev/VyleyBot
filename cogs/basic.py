@@ -62,8 +62,8 @@ async def eight_ball(ctx: commands.Context, *, question: str = None):
     answer = random.choice(responses)
     await ctx.send(f"🎱 Magic 8-Ball says: {answer}")
 
-@commands.command(name="roll") # Assumes 6 by default.
-async def roll(ctx: commands.Context, sides: str = '6'):
+@commands.command(name="roll") # Assumes 20 by default.
+async def roll(ctx: commands.Context, sides: str = '20'):
     try:
         num_sides = int(sides)
         if num_sides < 2:
