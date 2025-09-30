@@ -76,6 +76,10 @@ async def roll(ctx: commands.Context, sides: str = '20'):
     result = random.randint(1, num_sides)
     await ctx.send(f"@{ctx.author.name} rolled a {result} on a d{num_sides} 🎲")
 
+@commands.command(name="socials")
+async def socials(ctx: commands.Context):
+    await ctx.send("All my socials are here: https://linktr.ee/vyley")
 
-commands_list = [hello, ping, lurk, hug, eight_ball, roll]
+
+commands_list = [hello, ping, lurk, hug, eight_ball, roll, socials]
 
