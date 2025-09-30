@@ -26,6 +26,8 @@ cats! --> make it so people can redeem points to adopt a cat from a group of cat
 
 -1 -> add by 1 to a counter every time Vy misses a canon
 
+!link (Potentially?) -- Refer to Vyley's socials, maybe we make her make a https://linktr.ee/ or some such?
+
 🎮 Stream Utility
 
 !uptime → Shows how long the stream has been live (via Twitch API).
