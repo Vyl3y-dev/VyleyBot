@@ -60,7 +60,22 @@ async def eight_ball(ctx: commands.Context, *, question: str = None):
     ]
     
     answer = random.choice(responses)
-    await ctx.send(f"🎱 Question: '{question}'\n\n🎱 Magic 8-Ball says: {answer}")
+    await ctx.send(f"🎱 Magic 8-Ball says: {answer}")
 
-commands_list = [hello, ping, lurk, hug, eight_ball]
+@commands.command(name="roll") # Assumes 6 by default.
+async def roll(ctx: commands.Context, sides: str = '6'):
+    try:
+        num_sides = int(sides)
+        if num_sides < 2:
+            await ctx.send(f"@{ctx.author.name}, a dice needs at least 2 sides!")
+            return
+    except ValueError:
+        await ctx.send(f"@{ctx.author.name}, that's not a valid number! Usage: !roll <sides>")
+        return
+        
+    result = random.randint(1, num_sides)
+    await ctx.send(f"@{ctx.author.name} rolled a {result} on a d{num_sides} 🎲")
+
+
+commands_list = [hello, ping, lurk, hug, eight_ball, roll]
 
