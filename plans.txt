@@ -16,13 +16,13 @@ cats! --> make it so people can redeem points to adopt a cat from a group of cat
 
 !8ball <question> → Random yes/no/maybe response (Magic 8-ball). ✅
 
-!roll <sides> → Dice roll (e.g., !roll 20 → “You rolled a 14 🎲”). 
+!roll <sides> → Dice roll (e.g., !roll 20 → “You rolled a 14 🎲”). ✅
 
-!quote → Pulls a random saved quote from chat (needs simple DB or JSON). 
+!quote → Pulls a random saved quote from chat (needs simple DB or JSON). ✅
 
-!addquote <text> → Saves a memorable moment/quote (mod-only).
+!addquote <text> → Saves a memorable moment/quote (mod-only). ✅
 
-!followage -- Self explanatory.
+!followage -- Self explanatory. 
 
 +50 -> add by 1 to a counter every time Vy says +50
 
