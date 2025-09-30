@@ -11,3 +11,13 @@ Authors Github: https://github.com/Vyl3y-dev
 Authors Twitch: https://Twitch.tv/TheTerriblePlayer
 Extension Twitch: https://Twitch.tv/vyleybot
 Kofi: https://ko-fi.com/vyl3ydev
+
+DEV NOTE: When you pull the repo, be sure to run
+
+>pip install -r requirements.txt
+
+>flet pack launcher.py --onefile
+
+this regenerate dist/VyleyLauncher.exe locally
+
+THIS IS NOT FULLY IMPLEMENTED SO DON'T WORRY ABOUT IT YET!!!!
