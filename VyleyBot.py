@@ -49,5 +49,7 @@ if __name__ == "__main__":
     bot = VyleyBot()
     print("🚀 Running bot...")
     bot.load_module("cogs.cats")
-    print("🐈Cats to Adopt...FOUND!")
+    print("🐈Cats to Adopt... FOUND!")
+    bot.load_module("cogs.quotes")
+    print("📝Quotes module... FOUND!")
     bot.run()
