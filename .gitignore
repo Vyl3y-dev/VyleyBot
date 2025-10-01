@@ -186,3 +186,8 @@ vyleybot-env/
 #virtual envs - ignore
 
 .vscode/
+#workspace specific settings
+
+.bat
+.sh
+#bat and sh files
