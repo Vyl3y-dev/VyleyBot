@@ -1,6 +1,6 @@
 import datetime
 import iso8601
-import aiohttp # Needed cause twitchIO sucks.
+import aiohttp
 from twitchio.ext import commands
 
 def format_timedelta(delta: datetime.timedelta) -> str:
@@ -26,21 +26,22 @@ def format_timedelta(delta: datetime.timedelta) -> str:
         
     return parts[0]
 
-
 class StreamUtility(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def get_follow_since(self, user_id: str, broadcaster_id: str) -> datetime.datetime | None:
 
+        if not self.bot.client_id or not self.bot.token:
+            print("ERROR in get_follow_since: Bot is missing client_id or token attribute. Cannot make API call.")
+            return None
+
         headers = {
-            'Client-ID': self.bot.client_id,  # Correctly access the client_id
+            'Client-ID': self.bot.client_id,
             'Authorization': f'Bearer {self.bot.token}'
         }
-        
         url = f'https://api.twitch.tv/helix/channels/followers?user_id={user_id}&broadcaster_id={broadcaster_id}'
         
-        # We create a new, temporary session to make our own web request.
         async with aiohttp.ClientSession() as session:
             async with session.get(url, headers=headers) as response:
                 if response.status == 200:
@@ -49,7 +50,6 @@ class StreamUtility(commands.Cog):
                         follow_date_str = data['data'][0]['followed_at']
                         return iso8601.parse_date(follow_date_str)
                 else:
-                    # Fuck twitch API, they make it so difficult to get simple data.
                     print(f"[API ERROR] Twitch returned status {response.status}: {await response.text()}")
                 return None
 
@@ -83,7 +83,6 @@ class StreamUtility(commands.Cog):
         
         duration_str = format_timedelta(follow_duration)
         await ctx.send(f"@{target_username} has been following {ctx.channel.name} for {duration_str}. Thanks for the support! ❤️")
-
 
 def prepare(bot: commands.Bot):
     bot.add_cog(StreamUtility(bot))

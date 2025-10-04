@@ -1,5 +1,6 @@
 import os
 import json
+import sys 
 from twitchio.ext import commands
 from dotenv import load_dotenv
 from cogs.basic import commands_list
@@ -8,8 +9,19 @@ load_dotenv()
 
 CLIENT_ID = os.getenv("CLIENT_ID")
 
-with open("auth/token.json") as f:
-    token_data = json.load(f)
+try:
+    with open("auth/token.json") as f:
+        token_data = json.load(f)
+except FileNotFoundError:
+    print("FATAL: auth/token.json not found. Please run get_token.py to generate it.")
+    sys.exit(1)
+
+if not CLIENT_ID:
+    print("----------------------------------------------------------------")
+    print("         CLIENT_ID isn't set in environment variables. Please reach out to programmer hubby.")
+    print("         The !followage command will not work.")
+    print("         To fix this, create a .env file or set the variable.")
+    print("----------------------------------------------------------------")
 
 class VyleyBot(commands.Bot):
     def __init__(self):
@@ -28,19 +40,15 @@ class VyleyBot(commands.Bot):
         print("🔧 Bot initialized!")
 
     async def event_ready(self):
-        # This fires once connected
         print(f"✅ VyleyBot is connected to Twitch as {self.nick}")
         print(f"📦 Registered commands: {[c.name for c in self.commands.values()]}")
 
     async def event_message(self, message):
-        # Debug prints (optional)
         print("⚡ TRIGGERED: event_message")
         print(f"RAW MESSAGE: {message.content} from {getattr(message.author, 'name', 'unknown')}")
-
         if message.echo:
             print("⏭️ Ignoring echo message")
             return
-
         print(f"[CHAT LOG] {getattr(message.author, 'name', 'unknown')}: {message.content}")
         print("✅ Calling handle_commands")
         await self.handle_commands(message)
