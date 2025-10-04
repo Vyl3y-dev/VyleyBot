@@ -1,5 +1,6 @@
 import datetime
 import iso8601
+import aiohttp # Needed cause twitchIO sucks.
 from twitchio.ext import commands
 
 def format_timedelta(delta: datetime.timedelta) -> str:
@@ -39,15 +40,18 @@ class StreamUtility(commands.Cog):
         
         url = f'https://api.twitch.tv/helix/channels/followers?user_id={user_id}&broadcaster_id={broadcaster_id}'
         
-        async with self.bot._http.get(url, headers=headers) as response:
-            if response.status == 200:
-                data = await response.json()
-                if data.get('data'):
-                    follow_date_str = data['data'][0]['followed_at']
-                    return iso8601.parse_date(follow_date_str)
-            else:
-                print(f"Twitch API Error: {response.status} - {await response.text()}")
-            return None
+        # We create a new, temporary session to make our own web request.
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    if data.get('data'):
+                        follow_date_str = data['data'][0]['followed_at']
+                        return iso8601.parse_date(follow_date_str)
+                else:
+                    # Fuck twitch API, they make it so difficult to get simple data.
+                    print(f"[API ERROR] Twitch returned status {response.status}: {await response.text()}")
+                return None
 
     @commands.command(name="followage")
     async def followage(self, ctx: commands.Context, user: str = None):
