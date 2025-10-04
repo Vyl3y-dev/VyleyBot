@@ -25,16 +25,18 @@ def format_timedelta(delta: datetime.timedelta) -> str:
         
     return parts[0]
 
+
 class StreamUtility(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def get_follow_since(self, user_id: str, broadcaster_id: str) -> datetime.datetime | None:
-        # We use the bot's internal http session to make the request. Because TwitchIO doesn't provide a direct method for this or it was deprecated in this version.
+
         headers = {
-            'Client-ID': self.bot._connection.client_id,
+            'Client-ID': self.bot.client_id,  # Correctly access the client_id
             'Authorization': f'Bearer {self.bot.token}'
         }
+        
         url = f'https://api.twitch.tv/helix/channels/followers?user_id={user_id}&broadcaster_id={broadcaster_id}'
         
         async with self.bot._http.get(url, headers=headers) as response:
@@ -43,7 +45,9 @@ class StreamUtility(commands.Cog):
                 if data.get('data'):
                     follow_date_str = data['data'][0]['followed_at']
                     return iso8601.parse_date(follow_date_str)
-            return None # Return None if not following or if there's an error
+            else:
+                print(f"Twitch API Error: {response.status} - {await response.text()}")
+            return None
 
     @commands.command(name="followage")
     async def followage(self, ctx: commands.Context, user: str = None):
@@ -51,7 +55,6 @@ class StreamUtility(commands.Cog):
         target_username = user.strip('@') if user else ctx.author.name
         
         try:
-
             target_user_list = await self.bot.fetch_users(names=[target_username])
             if not target_user_list:
                 return await ctx.send(f"User '{target_username}' not found on Twitch.")
