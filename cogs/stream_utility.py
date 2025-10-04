@@ -1,4 +1,5 @@
 import datetime
+import iso8601
 from twitchio.ext import commands
 
 def format_timedelta(delta: datetime.timedelta) -> str:
@@ -24,10 +25,25 @@ def format_timedelta(delta: datetime.timedelta) -> str:
         
     return parts[0]
 
-
 class StreamUtility(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
+    async def get_follow_since(self, user_id: str, broadcaster_id: str) -> datetime.datetime | None:
+        # We use the bot's internal http session to make the request. Because TwitchIO doesn't provide a direct method for this or it was deprecated in this version.
+        headers = {
+            'Client-ID': self.bot._connection.client_id,
+            'Authorization': f'Bearer {self.bot.token}'
+        }
+        url = f'https://api.twitch.tv/helix/channels/followers?user_id={user_id}&broadcaster_id={broadcaster_id}'
+        
+        async with self.bot._http.get(url, headers=headers) as response:
+            if response.status == 200:
+                data = await response.json()
+                if data.get('data'):
+                    follow_date_str = data['data'][0]['followed_at']
+                    return iso8601.parse_date(follow_date_str)
+            return None # Return None if not following or if there's an error
 
     @commands.command(name="followage")
     async def followage(self, ctx: commands.Context, user: str = None):
@@ -35,31 +51,28 @@ class StreamUtility(commands.Cog):
         target_username = user.strip('@') if user else ctx.author.name
         
         try:
-            # I want to try fetching this way.
+
             target_user_list = await self.bot.fetch_users(names=[target_username])
             if not target_user_list:
                 return await ctx.send(f"User '{target_username}' not found on Twitch.")
             target_user = target_user_list[0]
             
-            # Get the user object instead for the broadcaster.
             broadcaster_list = await self.bot.fetch_users(names=[ctx.channel.name])
             if not broadcaster_list:
-                # This should realistically never happen, but I'm dumb anyways so let's try and be safe.
                 return await ctx.send("An error occurred: Could not find the broadcaster.")
             broadcaster = broadcaster_list[0]
 
-            # Fetch the follow relationship using the broadcaster's user object
-            follow = await target_user.fetch_follow(broadcaster)
+            follow_since = await self.get_follow_since(target_user.id, broadcaster.id)
 
         except Exception as e:
-            print(f"Error fetching follow data: {e}")
-            return await ctx.send("Could not fetch follow data from Twitch.")
+            print(f"An unexpected error occurred in followage command: {e}")
+            return await ctx.send("An unexpected error occurred while checking followage.")
 
-        if follow is None:
+        if follow_since is None:
             return await ctx.send(f"@{target_username} is not following {ctx.channel.name}.")
             
         now_utc = datetime.datetime.now(datetime.timezone.utc)
-        follow_duration = now_utc - follow.followed_at
+        follow_duration = now_utc - follow_since
         
         duration_str = format_timedelta(follow_duration)
         await ctx.send(f"@{target_username} has been following {ctx.channel.name} for {duration_str}. Thanks for the support! ❤️")
