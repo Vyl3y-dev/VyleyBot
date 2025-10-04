@@ -6,21 +6,22 @@ from cogs.basic import commands_list
 
 load_dotenv()
 
+CLIENT_ID = os.getenv("CLIENT_ID")
+
 with open("auth/token.json") as f:
     token_data = json.load(f)
-
-CLIENT_ID = os.getenv("CLIENT_ID")
 
 class VyleyBot(commands.Bot):
     def __init__(self):
         print("🔧 Initializing bot...")
         super().__init__(
-            token=token_data["access_token"],   # your OAuth token string
-            client_id=CLIENT_ID,
+            token=token_data["access_token"],
             prefix="!",
-            initial_channels=["theterribleplayer"],  # must be lowercase
+            initial_channels=["theterribleplayer"],
         )
-        # Register your function-based commands
+        
+        self.client_id = CLIENT_ID
+
         for cmd in commands_list:
             self.add_command(cmd)
         print("🔧 Bot initialized!")
