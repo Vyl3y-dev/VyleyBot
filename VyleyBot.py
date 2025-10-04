@@ -21,7 +21,8 @@ class VyleyBot(commands.Bot):
         )
         
         self.client_id = CLIENT_ID
-
+        self.token = token_data["access_token"]
+        
         for cmd in commands_list:
             self.add_command(cmd)
         print("🔧 Bot initialized!")
