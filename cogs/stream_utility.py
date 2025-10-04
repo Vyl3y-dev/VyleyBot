@@ -2,7 +2,7 @@ import datetime
 from twitchio.ext import commands
 
 def format_timedelta(delta: datetime.timedelta) -> str:
-    """Formats a timedelta into a human-readable string."""
+
     seconds = int(delta.total_seconds())
     days, seconds = divmod(seconds, 86400)
     hours, seconds = divmod(seconds, 3600)
@@ -31,7 +31,6 @@ class StreamUtility(commands.Cog):
 
     @commands.command(name="followage")
     async def followage(self, ctx: commands.Context, user: str = None):
-        """Displays how long a user has been following the channel."""
         
         target_username = user.strip('@') if user else ctx.author.name
         
