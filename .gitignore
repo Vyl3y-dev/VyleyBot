@@ -191,3 +191,4 @@ vyleybot-env/
 .bat
 .sh
 #bat and sh files
+auth/token.json
