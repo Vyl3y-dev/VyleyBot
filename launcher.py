@@ -32,18 +32,30 @@ def main(page: ft.Page):
             status.value = "⚠️ VyleyBot is already running."
         else:
             status.value = "🚀 Starting VyleyBot..."
-            processes["bot"] = subprocess.Popen(
-                [sys.executable, "-u", "VyleyBot.py"],
-                cwd=os.getcwd(),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1,
-                text=True,
-                encoding="utf-8",
-                errors="replace"
-            )
-            page.run_thread(stream_output, processes["bot"])
-        page.update()
+
+        # Detect if running frozen (.exe) or in dev mode
+        if getattr(sys, "frozen", False):
+            # Running from frozen exe → call the frozen bot exe
+            bot_cmd = [os.path.join(os.getcwd(), "VyleyBot.exe")]
+        else:
+            # Running from source → call Python to run the script
+            bot_cmd = [sys.executable, "-u", "VyleyBot.py"]
+
+        processes["bot"] = subprocess.Popen(
+            bot_cmd,
+            cwd=os.getcwd(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            bufsize=1,
+            text=True,
+            encoding="utf-8",
+            errors="replace"
+        )
+
+        page.run_thread(stream_output, processes["bot"])
+
+    page.update()
+
 
     def stop_bot(e):
         if "bot" in processes and processes["bot"].poll() is None:
