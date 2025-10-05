@@ -36,7 +36,7 @@ def main(page: ft.Page):
         # Detect if running frozen (.exe) or in dev mode
         if getattr(sys, "frozen", False):
             # Running from frozen exe → call the frozen bot exe
-            bot_cmd = [os.path.join(os.getcwd(), "VyleyBot.exe")]
+            bot_cmd = [os.path.join(os.getcwd(), "VyleyBotLauncher.exe")]
         else:
             # Running from source → call Python to run the script
             bot_cmd = [sys.executable, "-u", "VyleyBot.py"]
