@@ -80,6 +80,10 @@ async def roll(ctx: commands.Context, sides: str = '20'):
 async def socials(ctx: commands.Context):
     await ctx.send("All my socials are here: https://linktr.ee/vyley")
 
+@commands.command(name="listcommands")
+async def listcommands(ctx: commands.Context):
+    await ctx.send("📦 Working commands: ['hello', 'ping', 'lurk', 'hug', '8ball', 'roll', 'socials', 'addquote', 'quote', 'followage']")
 
-commands_list = [hello, ping, lurk, hug, eight_ball, roll, socials]
+
+commands_list = [hello, ping, lurk, hug, eight_ball, roll, socials, listcommands]
 
