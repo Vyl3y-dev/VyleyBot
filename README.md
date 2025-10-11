@@ -15,9 +15,8 @@ Kofi: https://ko-fi.com/vyl3ydev
 DEV NOTE: When you pull the repo, be sure to run
 
 >pip install -r requirements.txt
+>pip freeze > requirements.txt
 
->flet pack launcher.py --onefile
 
-this regenerate dist/VyleyLauncher.exe locally
-
-THIS IS NOT FULLY IMPLEMENTED SO DON'T WORRY ABOUT IT YET!!!!
+Currently working on Tkinter app (again) for UI for the bot...
+No, I don't want to talk about it...

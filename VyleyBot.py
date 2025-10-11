@@ -6,12 +6,6 @@ from dotenv import load_dotenv
 from cogs.basic import commands_list
 
 
-# sys.stdout = open("vyleybot.log", "a", buffering=1)
-# sys.stderr = sys.stdout
-
-# print("VyleyBot is online!")
-
-
 load_dotenv()
 
 CLIENT_ID = os.getenv("CLIENT_ID")
