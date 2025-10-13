@@ -10,12 +10,12 @@ sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding="utf-8", errors="rep
 class VyleyControl(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("VyleyBot Control Center 💜")
-        self.geometry("800x500")
+        self.title("VyleyBot Control Center 🍉")
+        self.geometry("1024x768")
         self.configure(bg="#1a1a1a")
 
         # --- UI ---
-        tk.Label(self, text="VyleyBot Console", fg="#bb86fc", bg="#1a1a1a", font=("Segoe UI", 14, "bold")).pack(pady=10)
+        tk.Label(self, text="VyleyBot Console", fg="#0026ff", bg="#1a1a1a", font=("Courier", 14, "bold")).pack(pady=10)
 
         self.console = ScrolledText(self, bg="#000", fg="#0f0", insertbackground="#0f0",
                                     wrap="word", font=("Consolas", 10))
@@ -24,7 +24,7 @@ class VyleyControl(tk.Tk):
         frame = tk.Frame(self, bg="#1a1a1a")
         frame.pack(pady=5)
 
-        self.status_label = tk.Label(frame, text="🔴 Offline", fg="#ff5555", bg="#1a1a1a", font=("Segoe UI", 10, "bold"))
+        self.status_label = tk.Label(frame, text="🔴 Offline", fg="#ff5555", bg="#1a1a1a", font=("Courier", 10, "bold"))
         self.status_label.pack(side="left", padx=10)
 
         tk.Button(frame, text="Start Bot", command=self.start_bot, bg="#2b2b2b", fg="white").pack(side="left", padx=5)
