@@ -35,6 +35,14 @@ class Counters(commands.Cog):
         save_counters(fiftyCounter)
         await ctx.send(f"Vy has claimed {countedFifty} +50's since 10/13/25")
     
+    @commands.command(name="miss")
+    async def miss(self, ctx: commands.Context):
+        missCounter = load_counters()
+        countedMiss = missCounter.get("minusOne", 0)
+        countedMiss += 1
+        missCounter["minusOne"] = countedMiss
+        save_counters(missCounter)
+        await ctx.send(f"Vy has missed {countedMiss} cannons since 10/13/25")
 
 def prepare(bot: commands.Bot):
     bot.add_cog(Counters(bot))
