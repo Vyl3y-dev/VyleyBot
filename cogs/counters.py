@@ -33,7 +33,7 @@ class Counters(commands.Cog):
         countedFifty += 1
         fiftyCounter["plusFifty"] = countedFifty
         save_counters(fiftyCounter)
-        await ctx.send(f"Vy has claimed @{countedFifty} +50's since 10/13/25")
+        await ctx.send(f"Vy has claimed {countedFifty} +50's since 10/13/25")
     
 
 def prepare(bot: commands.Bot):
