@@ -1,9 +1,13 @@
 import os
 import json
 import sys 
+import io
 from twitchio.ext import commands
 from dotenv import load_dotenv
 from cogs.basic import commands_list
+
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding="utf-8", errors="replace")
+sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding="utf-8", errors="replace")
 
 
 load_dotenv()
