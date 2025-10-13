@@ -85,5 +85,6 @@ async def listcommands(ctx: commands.Context):
     await ctx.send("📦 Working commands: ['hello', 'ping', 'lurk', 'hug', '8ball', 'roll', 'socials', 'addquote', 'quote', 'followage']")
 
 
+
 commands_list = [hello, ping, lurk, hug, eight_ball, roll, socials, listcommands]
 

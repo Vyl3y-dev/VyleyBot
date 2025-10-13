@@ -70,4 +70,6 @@ if __name__ == "__main__":
     print("👋 Welcome new chatters... Enabled!")
     bot.load_module("cogs.stream_utility")
     print("📊 Stream Utility commands... Enabled!")
+    bot.load_module("cogs.counters")
+    print("🧮 Counter commands... Enabled!")
     bot.run()
