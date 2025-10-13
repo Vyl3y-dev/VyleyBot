@@ -1,22 +1,25 @@
 import os
 import json
-from typing import List, Dict
+from typing import Dict
 from twitchio.ext import commands
 
 DATA_PATH = "data/counters.json"
 
-def load_counters() -> List[Dict]:
+def load_counters() -> Dict:
     if not os.path.exists(DATA_PATH):
-        return []
+        return {}
     try:
         with open(DATA_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
+            content = f.read()
+            if not content:
+                return {}
+            return json.loads(content)
     except (json.JSONDecodeError, FileNotFoundError):
-        return []
+        return {}
     
-def save_counters(counters: List[Dict]):
+def save_counters(counters: Dict):
     os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
-    with open(DATA_PATH, "w", encoding="utf=8") as f:
+    with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(counters, f, indent=2, ensure_ascii=False)
 
 class Counters(commands.Cog):
@@ -24,18 +27,13 @@ class Counters(commands.Cog):
         self.bot = bot
 
     @commands.command(name="fifty")
-    async def plusFifty(self, ctx: commands.Context, countedFifty: int = 0):
+    async def fifty(self, ctx: commands.Context):
         fiftyCounter = load_counters()
+        countedFifty = fiftyCounter.get("plusFifty", 0)
         countedFifty += 1
-        add_plusFifty = {
-            "id": len(fiftyCounter) + 1,
-            "plusFifty": countedFifty,
-        }
-
-        fiftyCounter.append(add_plusFifty)
+        fiftyCounter["plusFifty"] = countedFifty
         save_counters(fiftyCounter)
-        
-        await ctx.send(f"Vy has claimed @{fiftyCounter} +50's since 10/13/25")
+        await ctx.send(f"Vy has claimed @{countedFifty} +50's since 10/13/25")
     
 
 def prepare(bot: commands.Bot):
