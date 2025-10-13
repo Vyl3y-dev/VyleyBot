@@ -8,6 +8,8 @@ from cogs.basic import commands_list
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding="utf-8", errors="replace")
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding="utf-8", errors="replace")
+sys.stdout.reconfigure(line_buffering=True)
+
 
 
 load_dotenv()

@@ -24,18 +24,19 @@ class Counters(commands.Cog):
         self.bot = bot
 
     @commands.command(name="fifty")
-    async def plusFifty(self, ctx: commands.Context, counted: int = 0):
-        counters = load_counters()
-        counted += 1
+    async def plusFifty(self, ctx: commands.Context, countedFifty: int = 0):
+        fiftyCounter = load_counters()
+        countedFifty += 1
         add_plusFifty = {
-            "id": len(counters) + 1,
-            "plusFifty": counted,
+            "id": len(fiftyCounter) + 1,
+            "plusFifty": countedFifty,
         }
 
-        counters.append(add_plusFifty)
-        save_counters(counters)
+        fiftyCounter.append(add_plusFifty)
+        save_counters(fiftyCounter)
         
-        await ctx.send(f"Vy has claimed @{add_plusFifty} +50's since 10/13/25")
+        await ctx.send(f"Vy has claimed @{fiftyCounter} +50's since 10/13/25")
+    
 
 def prepare(bot: commands.Bot):
     bot.add_cog(Counters(bot))

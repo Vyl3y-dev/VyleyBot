@@ -45,7 +45,8 @@ class VyleyControl(tk.Tk):
                 stderr=subprocess.STDOUT,
                 text=True,
                 encoding="utf-8",
-                errors="replace"
+                errors="replace",
+                bufsize=1
             )
 
             self.status_label.config(text="🟢 Online", fg="#00ff88")
