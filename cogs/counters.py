@@ -24,11 +24,11 @@ class Counters(commands.Cog):
         self.bot = bot
 
     @commands.command(name="fifty")
-    async def plusFifty(ctx: commands.Context, counted: int = 0):
+    async def plusFifty(self, ctx: commands.Context, counted: int = 0):
         counters = load_counters()
         counted += 1
         add_plusFifty = {
-            "id": counters,
+            "id": len(counters) + 1,
             "plusFifty": counted,
         }
 
