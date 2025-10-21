@@ -24,9 +24,9 @@ cats! --> make it so people can redeem points to adopt a cat from a group of cat
 
 !followage -- Self explanatory. ✅
 
-+50 -> add by 1 to a counter every time Vy says +50
++50 -> add by 1 to a counter every time Vy says +50 ✅
 
--1 -> add by 1 to a counter every time Vy misses a canon
+-1 -> add by 1 to a counter every time Vy misses a canon ✅
 
 !link (Potentially?) -- Refer to Vyley's socials, maybe we make her make a https://linktr.ee/ or some such? ✅
 
