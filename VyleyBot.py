@@ -78,4 +78,6 @@ if __name__ == "__main__":
     print("📊 Stream Utility commands... Enabled!")
     bot.load_module("cogs.counters")
     print("🧮 Counter commands... Enabled!")
+    bot.load_module("cogs.position")
+    print("🥇 Position commands... Enabled!")
     bot.run()
