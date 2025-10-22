@@ -14,8 +14,8 @@ class Position(commands.Cog):
         if not held_position:
             self.positions["first"] = ctx.author.name
             await ctx.send(f"{ctx.author.name} is first! <3")
-            else:
-                await ctx.send(f"{held_position} was already first!")
+        else:
+            await ctx.send(f"{held_position} was already first!")
 
     @commands.command(name="second")
     async def second(self, ctx: commands.Context):
