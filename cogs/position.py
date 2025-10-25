@@ -27,5 +27,15 @@ class Position(commands.Cog):
         else:
             await ctx.send(f"{held_position} was already second!")
     
+    @commands.command(name="third")
+    async def third(self, ctx: commands.Context):
+        held_position = self.positions.get("third")
+
+        if not held_position:
+            self.positions["third"] = ctx.author.name
+            await ctx.send(f"{ctx.author.name} is third! <3")
+        else:
+            await ctx.send(f"{held_position} was already third!")
+    
 def prepare(bot: commands.Bot):
     bot.add_cog(Position(bot))
