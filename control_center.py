@@ -3,8 +3,10 @@ from tkinter.scrolledtext import ScrolledText
 import subprocess, threading, sys, os, io
 
 
-sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding="utf-8", errors="replace")
-sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding="utf-8", errors="replace")
+# 🧠 Ensure UTF-8 and live output forwarding
+sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
+sys.stderr.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
+
 
 
 class VyleyControl(tk.Tk):
@@ -64,9 +66,11 @@ class VyleyControl(tk.Tk):
             self.console.insert(tk.END, "⚠️ Bot not running.\n")
 
     def read_output(self):
-        for line in self.bot_proc.stdout:
+        for line in iter(self.bot_proc.stdout.readline, ''):
             self.console.insert(tk.END, line)
             self.console.see(tk.END)
+        self.bot_proc.stdout.close()
+
 
     def on_close(self):
         self.stop_bot()

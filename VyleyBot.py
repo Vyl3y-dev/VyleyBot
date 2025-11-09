@@ -5,30 +5,38 @@ import io
 from twitchio.ext import commands
 from dotenv import load_dotenv
 from cogs.basic import commands_list
+import subprocess
+import threading
+import asyncio
+from eventsub_workingtest import listen_eventsub
 
-sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding="utf-8", errors="replace")
-sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding="utf-8", errors="replace")
-sys.stdout.reconfigure(line_buffering=True)
-
+sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
+sys.stderr.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 
 
 load_dotenv()
-
 CLIENT_ID = os.getenv("CLIENT_ID")
 
+# --- Load Bot Token ---
 try:
-    with open("auth/token.json") as f:
+    with open("auth/token_bot.json") as f:
         token_data = json.load(f)
 except FileNotFoundError:
-    print("FATAL: auth/token.json not found. Please run get_token.py to generate it.")
+    print("FATAL: auth/token_bot.json not found. Run: python get_token.py bot")
     sys.exit(1)
 
 if not CLIENT_ID:
     print("----------------------------------------------------------------")
-    print("         CLIENT_ID isn't set in environment variables. Please reach out to programmer hubby.")
-    print("         The !followage command will not work.")
-    print("         To fix this, create a .env file or set the variable.")
+    print("  CLIENT_ID isn't set in environment variables.")
+    print("  The !followage command and Twitch API calls may fail.")
     print("----------------------------------------------------------------")
+
+# Optional: check broadcaster token exists
+if not os.path.exists("auth/token_broadcaster.json"):
+    print("⚠️  Broadcaster token not found — EventSub events unavailable.")
+else:
+    print("✅ Broadcaster token found.")
+
 
 class VyleyBot(commands.Bot):
     def __init__(self):
@@ -67,17 +75,39 @@ class VyleyBot(commands.Bot):
 
 if __name__ == "__main__":
     bot = VyleyBot()
+# === Start EventSub listener as background process and capture output ===
+    def run_eventsub():
+        asyncio.run(listen_eventsub())
+
+    print("🧠 Launching EventSub listener in background...")
+    eventsub_path = os.path.join(os.path.dirname(__file__), "eventsub_workingtest.py")
+
+    eventsub_proc = subprocess.Popen(
+        [sys.executable, "-u", eventsub_path],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace"
+    )
+
+    # Thread to forward EventSub output into VyleyBot's console
+    def forward_eventsub_output():
+        while True:
+            line = eventsub_proc.stdout.readline()
+            if not line:
+                break
+            print(f"[EventSub] {line}", end="", flush=True)
+
+    threading.Thread(target=forward_eventsub_output, daemon=True).start()
+
+    # === Load cogs and start bot ===
     print("🚀 Running bot...")
-    bot.load_module("cogs.cats")
-    print("🐈 Cats to Adopt... Enabled!")
-    bot.load_module("cogs.quotes")
-    print("📝 Quotes module... Enabled!")
-    bot.load_module("cogs.welcome")
-    print("👋 Welcome new chatters... Enabled!")
-    bot.load_module("cogs.stream_utility")
-    print("📊 Stream Utility commands... Enabled!")
-    bot.load_module("cogs.counters")
-    print("🧮 Counter commands... Enabled!")
-    bot.load_module("cogs.position")
-    print("🥇 Position commands... Enabled!")
+    bot.load_module("cogs.cats");        print("🐈 Cats to Adopt... Enabled!")
+    bot.load_module("cogs.quotes");      print("📝 Quotes module... Enabled!")
+    bot.load_module("cogs.welcome");     print("👋 Welcome new chatters... Enabled!")
+    bot.load_module("cogs.stream_utility"); print("📊 Stream Utility commands... Enabled!")
+    bot.load_module("cogs.counters");    print("🧮 Counter commands... Enabled!")
+    bot.load_module("cogs.position");    print("🥇 Position commands... Enabled!")
+
     bot.run()
